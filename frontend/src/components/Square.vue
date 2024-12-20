@@ -50,12 +50,16 @@
               </div>
               <span class="info-content">{{ formatDate(project.start_date) }} 至 {{ formatDate(project.end_date) }}</span>
             </div>
-            <div class="info-item">
-              <div class="info-label">
-                <el-icon><Location /></el-icon>
-                <span>地点</span>
+            <div class="location-info">
+              <span>地点</span>
+              <div class="coordinate-container">
+                <span class="info-content">{{ project.longitude }}°E，{{ project.latitude }}°N</span>
+                <a-map-component
+                  :latitude="`${project.latitude}°N`"
+                  :longitude="`${project.longitude}°E`"
+                  class="location-map"
+                />
               </div>
-              <span class="info-content">{{ project.longitude }}°E，{{ project.latitude }}°N</span>
             </div>
           </div>
           
@@ -223,6 +227,7 @@ import {
   ArrowRight
 } from '@element-plus/icons-vue'
 import { surveyAPI } from '@/utils/api'
+import AMapComponent from '@/components/AMapComponent.vue'
 
 const searchQuery = ref('')
 const selectedFileType = ref('')
@@ -512,7 +517,7 @@ const selectCategory = (category) => {
   }
 }
 
-// 文件导航相关方���
+// 文件导航相关方
 const hasPrevFile = computed(() => {
   return currentFileIndex.value > 0
 })
@@ -938,5 +943,23 @@ onMounted(() => {
   background-color: #f8f9fa;
   border-radius: 4px;
   overflow: hidden;
+}
+
+.location-info {
+  display: flex;
+  align-items: flex-start;
+  margin-bottom: 10px;
+}
+
+.coordinate-container {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.location-map {
+  margin-top: 10px;
+  width: 100%;
+  max-width: 600px;
 }
 </style> 
